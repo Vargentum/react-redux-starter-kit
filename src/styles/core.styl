@@ -1,0 +1,21 @@
+:global
+  @import 'utils/settings';
+  @import 'utils/mixins';
+  @import 'utils/setup-mixin';
+
+  // Some best-practice CSS that's useful for most apps
+  // Just remove them if they're not what you want
+  html
+    box-sizing: border-box;
+
+  html
+  body
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-size: 20px;
+
+  *
+  *:before
+  *:after
+    box-sizing: inherit;
