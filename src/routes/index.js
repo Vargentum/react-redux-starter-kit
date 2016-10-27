@@ -1,5 +1,6 @@
 import React from 'react'
 import { Route, IndexRoute } from 'react-router'
+import {lazyLoadComponent} from './utils'
 
 // NOTE: here we're making use of the `resolve.root` configuration
 // option in webpack, which allows us to specify import paths as if
@@ -7,10 +8,17 @@ import { Route, IndexRoute } from 'react-router'
 // very easy to navigate to files regardless of how deeply nested
 // your current file is.
 import CoreLayout from 'layouts/CoreLayout/CoreLayout'
+
+/* -----------------------------
+  NOTE: 
+  any view processed through bundle-loader, and shoulb be processed
+  with lazyLoadComponent util
+----------------------------- */
 import HomeView from 'views/HomeView/HomeView'
+import LandingView from 'views/LandingView/LandingView'
 
 export default (store) => (
   <Route path='/' component={CoreLayout}>
-    <IndexRoute component={HomeView} />
+    <IndexRoute getComponent={lazyLoadComponent(LandingView)} />
   </Route>
 )

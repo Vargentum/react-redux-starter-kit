@@ -116,42 +116,66 @@ webpackConfig.eslint = {
 // Loaders
 // ------------------------------------
 // JavaScript / JSON
+const jsLoaderQuery = {
+  cacheDirectory: true,
+  plugins: ['transform-runtime'],
+  presets: ['es2015', 'react', 'stage-0'],
+  env: {
+    development: {
+      plugins: [
+        ['react-transform', {
+          transforms: [{
+            transform: 'react-transform-hmr',
+            imports: ['react'],
+            locals: ['module']
+          }, {
+            transform: 'react-transform-catch-errors',
+            imports: ['react', 'redbox-react']
+          }]
+        }]
+      ]
+    },
+    production: {
+      plugins: [
+        'transform-react-remove-prop-types',
+        'transform-react-constant-elements'
+      ]
+    }
+  }
+}
+
 webpackConfig.module.loaders = [{
   test: /\.(js|jsx)$/,
   exclude: /node_modules/,
   loader: 'babel',
-  query: {
-    cacheDirectory: true,
-    plugins: ['transform-runtime'],
-    presets: ['es2015', 'react', 'stage-0'],
-    env: {
-      development: {
-        plugins: [
-          ['react-transform', {
-            transforms: [{
-              transform: 'react-transform-hmr',
-              imports: ['react'],
-              locals: ['module']
-            }, {
-              transform: 'react-transform-catch-errors',
-              imports: ['react', 'redbox-react']
-            }]
-          }]
-        ]
-      },
-      production: {
-        plugins: [
-          'transform-react-remove-prop-types',
-          'transform-react-constant-elements'
-        ]
-      }
-    }
-  }
+  query: jsLoaderQuery
 },
 {
   test: /\.json$/,
   loader: 'json'
 }]
+
+// ------------------------------------
+// Dynamic Views Loading
+// ------------------------------------
+const viewComponentRegexp = /views\/([^\/]+\/?[^\/]+).(js|jsx)$/  
+
+webpackConfig.module.loaders.push({
+  test: viewComponentRegexp,
+  include: paths.base(config.dir_client),
+  loaders: ['bundle?lazy', `babel?${JSON.stringify(jsLoaderQuery)}`]
+})
+
+// ------------------------------------
+// Third party scripts loader
+// ------------------------------------
+const thirdPartyScripts = /assets\/.*.(js|jsx)$/  
+webpackConfig.module.loaders.push({
+  test: thirdPartyScripts,
+  include: paths.base(config.dir_client),
+  loader: 'script'
+})
+
 
 // ------------------------------------
 // Style Loaders
@@ -284,7 +308,14 @@ webpackConfig.module.loaders.push(
   { test: /\.ttf(\?.*)?$/,   loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/octet-stream' },
   { test: /\.eot(\?.*)?$/,   loader: 'file?prefix=fonts/&name=[path][name].[ext]' },
   { test: /\.svg(\?.*)?$/,   loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=image/svg+xml' },
-  { test: /\.(png|jpg)$/,    loader: 'url?limit=8192' }
+  // { test: /\.(png|jpg)$/,    loader: 'url?limit=8192' },
+  {
+      test: /\.(jpe?g|png|gif|svg)$/i,
+      loaders: [
+          'file?hash=sha512&digest=hex&name=[hash].[ext]',
+          'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
+      ]
+  }
 )
 /* eslint-enable */
 
