@@ -197,11 +197,22 @@ if (isUsingCSSModules) {
   })
 
   webpackConfig.module.loaders.push({
-    test: /\.css$/,
+    test: /\.styl$/,
     include: cssModulesRegex,
     loaders: [
       'style',
       cssModulesLoader,
+      'postcss',
+      'stylus?sourceMap&resolve url'
+    ]
+  })
+
+  //no modules for .css files
+  webpackConfig.module.loaders.push({
+    test: /\.css$/,
+    loaders: [
+      'style',
+      BASE_CSS_LOADER,
       'postcss'
     ]
   })
@@ -217,6 +228,16 @@ webpackConfig.module.loaders.push({
     BASE_CSS_LOADER,
     'postcss',
     'sass?sourceMap'
+  ]
+})
+webpackConfig.module.loaders.push({
+  test: /\.styl$/,
+  exclude: excludeCSSModules,
+  loaders: [
+    'style',
+    BASE_CSS_LOADER,
+    'postcss',
+    'stylus?sourceMap&resolve url'
   ]
 })
 webpackConfig.module.loaders.push({
