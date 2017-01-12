@@ -1,4 +1,4 @@
-import {includes} from 'lodash'
+import { includes } from 'lodash'
 
 /* -----------------------------
   factory for sagas function `pattern`
@@ -8,7 +8,7 @@ import {includes} from 'lodash'
 ----------------------------- */
 
 export function createReduxFormActionMatcher (actionType, ...formNames) {
-  return (action) => { 
+  return (action) => {
     if (!action || !action.meta) return false
     return action.type === `redux-form/${actionType}` && includes(formNames, action.meta.form)
   }

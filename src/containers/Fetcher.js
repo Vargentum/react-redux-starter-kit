@@ -2,9 +2,9 @@
 import React, { Component } from 'react'
 import R from 'ramda'
 import { connect } from 'react-redux'
-import { select } from 'redux-crud-store'
+// import { select } from 'redux-crud-store'
 /*
-Example: 
+Example:
 import { crudActions as coursesCrudActions, MODEL as COURSES_MODEL }
   from 'routes/speedreading/Courses/modules/courses'
 */
@@ -42,7 +42,7 @@ export function collectionFetcherFactory (resources, mapStateToProps, mapDispatc
 }
 
 /*
-Example: 
+Example:
 export const LessonFetcher = collectionFetcherFactory(
   [LESSONS_MODEL, EXERCISES_MODEL],
   (state, ownProps) => ({

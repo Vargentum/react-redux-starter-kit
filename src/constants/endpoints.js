@@ -1,5 +1,4 @@
 export const API = '/api/'
 
-const makeEndpoint = (endpoint) => `${API}${endpoint}/`
-
+// const makeEndpoint = (endpoint) => `${API}${endpoint}/`
 

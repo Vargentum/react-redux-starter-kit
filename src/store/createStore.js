@@ -10,7 +10,6 @@ import { persistStore, autoRehydrate } from 'redux-persist'
 import immutableTransform from 'redux-persist-transform-immutable'
 
 export default (initialState = {}) => {
-  
   // ======================================================
   // Middleware Configuration
   // ======================================================
@@ -62,7 +61,7 @@ export default (initialState = {}) => {
   // Redux Sagas & ReduxCrudStore
   // ======================================================
   const client = new ApiClient({ basePath: API })
-  
+
   runAllSagas(sagaMiddleware.run, { crudSaga: crudSaga(client) })
 
   // ======================================================
